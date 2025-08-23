@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>farsi youcef • مشغل فيديوهات يوتيوب</title>
+  <style>
+    :root{
+      --bg-dark:#0a192f;
+      --bg-light:#112240;
+      --text-main:#e6f1ff;
+      --text-sub:#8892b0;
+      --accent-green:#64ffda;
+      --shadow: rgba(0, 0, 0, 0.2);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; font-family:'Segoe UI', Tahoma, sans-serif; background:var(--bg-dark); color:var(--text-main);
+      transition: background-color 0.3s;
+    }
+    header{
+      background:var(--bg-light); padding:16px 20px; display:flex; align-items:center; gap:16px; justify-content:space-between;
+      flex-wrap:wrap; box-shadow:0 2px 10px var(--shadow);
+    }
+    header .brand{
+      font-weight:900; font-size:40px;
+      background: linear-gradient(45deg, var(--accent-green), #60d2b0);
+      -webkit-background-clip:text; -webkit-text-fill-color:transparent;
+      letter-spacing:1px; flex-shrink:0;
+    }
+    .search{
+      display:flex; gap:10px; width:min(760px, 100%); margin-inline:auto;
+    }
+    .search input{
+      flex:1; padding:12px 18px; border:1px solid var(--text-sub); border-radius:12px; font-size:16px;
+      background:var(--bg-light); color:var(--text-main);
+      transition: border-color 0.3s;
+    }
+    .search input:focus{outline:none; border-color:var(--accent-green);}
+    .search button{
+      border:none; background:var(--accent-green); color:var(--bg-dark); padding:12px 20px; border-radius:12px; font-weight:700; cursor:pointer;
+      transition: transform 0.2s, background 0.2s;
+    }
+    .search button:hover{transform:translateY(-2px); background:#50e8c0}
+    .app{
+      display:grid; grid-template-columns:2.5fr 1.5fr; gap:20px; padding:20px; align-items:start;
+    }
+    .player-section{background:var(--bg-light); border-radius:16px; padding:20px; position:relative; box-shadow:0 4px 15px var(--shadow);}
+    .player-frame{
+      width:100%; height:70vh; border:0; border-radius:12px; background:#000;
+    }
+    .fullscreen-btn{
+      position:absolute; top:30px; left:30px; background:rgba(0,0,0,0.6); color:#fff; border:none; padding:10px 16px; border-radius:8px;
+      cursor:pointer; font-size:16px; transition: background 0.3s;
+    }
+    .fullscreen-btn:hover{background:rgba(0,0,0,0.8);}
+    .now-title{margin:18px 4px 0; font-weight:700; font-size:24px; color:var(--text-main);}
+    .now-meta{opacity:.85; font-size:16px; margin:8px 4px; color:var(--text-sub);}
+    .list{
+      background:var(--bg-light); border-radius:16px; padding:16px; max-height:calc(100vh - 120px); overflow:auto;
+      box-shadow:0 4px 15px var(--shadow);
+    }
+    .list::-webkit-scrollbar{width:8px;}
+    .list::-webkit-scrollbar-thumb{background:var(--text-sub); border-radius:10px;}
+    .list::-webkit-scrollbar-track{background:transparent;}
+
+    .item{
+      display:flex; gap:12px; padding:10px; border-radius:12px; cursor:pointer; align-items:flex-start;
+      background:transparent; transition:background .2s, transform .1s;
+      margin-bottom:8px;
+    }
+    .item:hover{background:rgba(100,255,218,0.1); transform:scale(1.01);}
+    .item.active{background:rgba(100,255,218,0.2); outline:2px solid rgba(100,255,218,0.4); transform:scale(1.01);}
+    .thumb{
+      width:160px; aspect-ratio:16/9; border-radius:10px; object-fit:cover; background:var(--bg-dark); flex:0 0 160px;
+    }
+    .itxt{display:flex; flex-direction:column; gap:6px; flex:1}
+    .ititle{font-size:16px; font-weight:700; line-height:1.4; color:var(--text-main);}
+    .ichannel, .idate{font-size:14px; opacity:.85; color:var(--text-sub);}
+    .empty, .error{background:#b23b3b; padding:12px; border-radius:10px; margin:10px 0; color:#fff;}
+    @media (max-width: 900px){
+      .app{grid-template-columns:1fr;}
+      .list{max-height:none;}
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">farsi youcef</div>
+    <form class="search" id="searchForm">
+      <input id="q" type="text" placeholder="ابحث عن فيديو... (مثال: كرة قدم، برمجة، قرآن)" />
+      <button type="submit">بحث</button>
+    </form>
+  </header>
+
+  <main class="app">
+    <section class="player-section" id="playerBox">
+      <button class="fullscreen-btn" onclick="toggleFullscreen()">⛶ تكبير</button>
+      <iframe id="player" class="player-frame" title="Youcef Player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+      <div class="now-title" id="nowTitle">—</div>
+      <div class="now-meta" id="nowMeta"></div>
+      <div id="playerError" class="error" style="display:none"></div>
+    </section>
+
+    <aside class="list" id="results">
+      </aside>
+  </main>
+
+  <script>
+    // ⚠️ تنبيه: هذا المفتاح مكشوف. لا تستخدمه في تطبيق حقيقي.
+    const API_KEY = "AIzaSyAuOyCEzMgnjGbRqlECI9HU5TgIRs8a4Bw";
+
+    const els = {
+      form: document.getElementById('searchForm'),
+      q: document.getElementById('q'),
+      results: document.getElementById('results'),
+      player: document.getElementById('player'),
+      nowTitle: document.getElementById('nowTitle'),
+      nowMeta: document.getElementById('nowMeta'),
+      playerError: document.getElementById('playerError'),
+    };
+
+    let currentVideoId = null;
+    let nextPageToken = null;
+    let currentQuery = null;
+
+    function play(video) {
+      if (!video || !video.videoId) return;
+      currentVideoId = video.videoId;
+      els.player.src = `https://www.youtube.com/embed/${video.videoId}?autoplay=1&modestbranding=1&rel=0`;
+      els.nowTitle.textContent = video.title || "فيديو";
+      els.nowMeta.textContent = [video.channelTitle, formatDate(video.publishedAt)].filter(Boolean).join(" • ");
+      els.playerError.style.display = "none";
+      highlightActive(video.videoId);
+      if (matchMedia("(max-width: 900px)").matches) {
+        scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function highlightActive(id){
+      document.querySelectorAll('.item').forEach(el=>{
+        el.classList.toggle('active', el.dataset.id === id);
+      });
+    }
+
+    function formatDate(iso){
+      try {
+        const d = new Date(iso);
+        if (isNaN(d)) return "";
+        return d.toLocaleDateString('ar-DZ', { year:'numeric', month:'short', day:'numeric' });
+      } catch { return ""; }
+    }
+
+    function renderList(items){
+      if (!items || !items.length){
+        els.results.innerHTML = `<div class="empty">⚠️ لا توجد نتائج.</div>`;
+        return;
+      }
+      els.results.innerHTML = items.map(v => `
+        <div class="item" data-id="${v.videoId}" onclick='play(window.__lastItems.find(x => x.videoId === "${v.videoId}"))'>
+          <img class="thumb" src="${v.thumbnail}" alt="" loading="lazy">
+          <div class="itxt">
+            <div class="ititle">${v.title}</div>
+            <div class="ichannel">${v.channelTitle || ""}</div>
+            <div class="idate">${formatDate(v.publishedAt) || ""}</div>
+          </div>
+        </div>
+      `).join("");
+      if (!currentVideoId) play(items[0]);
+    }
+
+    function showLoading(){
+        els.results.innerHTML = `<div class="empty">جارِ البحث...</div>`;
+    }
+    
+    function showError(message){
+        els.results.innerHTML = `<div class="error">⚠️ خطأ: ${message}</div>`;
+    }
+
+    async function fetchJSON(url){
+      const res = await fetch(url);
+      const data = await res.json();
+      if (data.error) throw new Error(data.error.message || "API error");
+      return data;
+    }
+
+    async function doSearch(q, append = false){
+      try{
+        if(!append) showLoading();
+        
+        const url = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=video&maxResults=15&q=${encodeURIComponent(q)}&key=${API_KEY}${nextPageToken ? `&pageToken=${nextPageToken}` : ""}`;
+        const data = await fetchJSON(url);
+        nextPageToken = data.nextPageToken || null;
+        
+        const items = data.items.filter(it => it.id && it.id.videoId).map(it => ({
+          videoId: it.id.videoId,
+          title: it.snippet?.title || "",
+          channelTitle: it.snippet?.channelTitle || "",
+          publishedAt: it.snippet?.publishedAt || "",
+          thumbnail: it.snippet?.thumbnails?.medium?.url || ""
+        }));
+
+        window.__lastItems = append ? (window.__lastItems || []).concat(items) : items;
+        renderList(window.__lastItems);
+        currentQuery = q;
+      }catch(e){
+        showError(e.message);
+      }
+    }
+
+    async function loadPopular(append = false){
+      try{
+        if(!append) showLoading();
+
+        const url = `https://www.googleapis.com/youtube/v3/videos?part=snippet&chart=mostPopular&maxResults=15&regionCode=DZ&key=${API_KEY}${nextPageToken ? `&pageToken=${nextPageToken}` : ""}`;
+        const data = await fetchJSON(url);
+        nextPageToken = data.nextPageToken || null;
+
+        const items = data.items.map(it => ({
+          videoId: it.id,
+          title: it.snippet?.title || "",
+          channelTitle: it.snippet?.channelTitle || "",
+          publishedAt: it.snippet?.publishedAt || "",
+          thumbnail: it.snippet?.thumbnails?.medium?.url || ""
+        }));
+
+        window.__lastItems = append ? (window.__lastItems || []).concat(items) : items;
+        renderList(window.__lastItems);
+        currentQuery = null;
+      }catch(e){
+        showError(e.message);
+      }
+    }
+
+    els.form.addEventListener('submit', (ev)=>{
+      ev.preventDefault();
+      const q = els.q.value.trim();
+      if (!q){ els.q.focus(); return; }
+      doSearch(q);
+    });
+
+    document.getElementById('results').addEventListener('scroll', ()=>{
+      const el = document.getElementById('results');
+      if(el.scrollTop + el.clientHeight >= el.scrollHeight - 100){
+        if(nextPageToken){
+          if(currentQuery) doSearch(currentQuery, true);
+          else loadPopular(true);
+        }
+      }
+    });
+
+    loadPopular();
+
+    function toggleFullscreen(){
+      const box = document.getElementById('playerBox');
+      if (!document.fullscreenElement) {
+        box.requestFullscreen().catch(err => alert("خطأ: " + err));
+      } else {
+        document.exitFullscreen();
+      }
+    }
+  </script>
+</body>
+</html>
