@@ -11,6 +11,22 @@
     font-family: sans-serif;
     text-align: center;
   }
+  /* شعار احترافي */
+  .site-logo {
+    font-family: "Arial Black", sans-serif;
+    font-size: 48px;
+    font-weight: bold;
+    color: #3cfcb3;
+    text-shadow:
+      2px 2px 0 #007766,
+      4px 4px 8px rgba(0, 0, 0, 0.6);
+    margin: 20px 0;
+    display: inline-block;
+    padding: 10px 25px;
+    background: rgba(0, 60, 50, 0.25);
+    border-radius: 14px;
+    box-shadow: 0 4px 15px rgba(60, 252, 179, 0.3);
+  }
   .search-box {
     margin: 20px;
   }
@@ -86,25 +102,36 @@
     padding: 10px;
     background: #0f1e3f;
     border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
-  .video-list div {
-    margin: 10px 0;
+  .video-list-item {
+    display: flex;
+    align-items: center;
+    background: #1a2b4d;
+    border-radius: 8px;
+    padding: 5px;
+    transition: border 0.2s, box-shadow 0.2s;
     cursor: pointer;
-    text-align: center;
+  }
+  .video-list-item:hover,
+  .video-list-item.active {
+    border: 2px solid #3cfcb3;
+    box-shadow: 0 0 10px rgba(60, 252, 179, 0.5);
   }
   .video-list img {
-    width: 90%;
-    max-width: 400px;
-    border-radius: 8px;
-    transition: transform 0.2s;
-  }
-  .video-list img:hover {
-    transform: scale(1.05);
+    width: 150px;
+    height: auto;
+    border-radius: 6px;
+    margin-left: 10px;
+    flex-shrink: 0;
   }
   .video-title {
     font-size: 14px;
-    margin-top: 5px;
     color: #ccc;
+    text-align: right;
+    flex: 1;
   }
   .current-quality {
     font-size: 13px;
@@ -122,7 +149,7 @@
 </style>
 </head>
 <body>
-<h1>farsi youcef</h1>
+<h1 class="site-logo">Farsi Youcef</h1>
 
 <div class="search-box">
   <input type="text" id="search" placeholder="اكتب للبحث في الأفلام">
@@ -139,10 +166,6 @@
 
   <div class="controls">
     <button onclick="toggleFullscreen()">⛶ تكبير</button>
-    <a id="downloadBtn" href="#" target="_blank">
-      <button>⬇ تحميل الفيديو</button>
-    </a>
-    <button onclick="copyLink()">📋 نسخ الرابط</button>
     <select id="qualitySelect" onchange="changeQuality()">
       <option value="auto">⚡ تلقائي</option>
       <option value="360">360p</option>
@@ -165,7 +188,6 @@ const state = {
   currentQuality: "auto",
 };
 
-// 🚀 تحسين البحث وإعادة استخدام الكود
 async function fetchArchive(query, page = 1) {
   const url = `https://archive.org/advancedsearch.php?q=${encodeURIComponent(query)}+AND+mediatype:(movies)&fl[]=identifier&fl[]=title&sort[]=downloads+desc&rows=20&page=${page}&output=json`;
   const res = await fetch(url);
@@ -197,33 +219,36 @@ function showVideos(docs) {
   docs.forEach(doc => {
     const thumb = `https://archive.org/services/img/${doc.identifier}`;
     const div = document.createElement("div");
+    div.classList.add("video-list-item");
+    div.onclick = () => changeVideo(doc.identifier, doc.title, div);
     div.innerHTML = `
-      <img src="${thumb}" alt="${doc.title}" onclick="changeVideo('${doc.identifier}','${doc.title}')">
+      <img src="${thumb}" alt="${doc.title}">
       <div class="video-title">${doc.title}</div>
     `;
     listDiv.appendChild(div);
   });
 
   if (state.currentPage === 1 && docs.length > 0) {
-    changeVideo(docs[0].identifier, docs[0].title);
+    const firstItem = listDiv.querySelector(".video-list-item");
+    if (firstItem) {
+      firstItem.classList.add("active");
+      changeVideo(docs[0].identifier, docs[0].title, firstItem);
+    }
   }
 }
 
-function changeVideo(id, title) {
+function changeVideo(id, title, element) {
   state.currentVideoId = id;
   document.getElementById("videoTitle").innerText = title;
   updateVideo();
+  document.querySelectorAll(".video-list-item").forEach(el => el.classList.remove("active"));
+  if (element) element.classList.add("active");
 }
 
 function updateVideo() {
   const src = `https://archive.org/embed/${state.currentVideoId}${state.currentQuality !== 'auto' ? '?size=' + state.currentQuality : ''}`;
-  const downloadLink = `https://archive.org/download/${state.currentVideoId}${state.currentQuality !== 'auto' ? '?size=' + state.currentQuality : ''}`;
-
   document.getElementById("archiveFrame").src = src;
-  document.getElementById("downloadBtn").href = downloadLink;
-  document.getElementById("downloadBtn").setAttribute("data-link", src);
   document.getElementById("currentQualityDisplay").innerText = "الجودة: " + (state.currentQuality === 'auto' ? "تلقائي" : state.currentQuality + "p");
-
   document.getElementById("results").scrollIntoView({ behavior: "smooth" });
 }
 
@@ -243,11 +268,6 @@ function toggleFullscreen() {
   else if (frame.mozRequestFullScreen) frame.mozRequestFullScreen();
   else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
   else if (frame.msRequestFullscreen) frame.msRequestFullscreen();
-}
-
-function copyLink() {
-  const link = document.getElementById("downloadBtn").getAttribute("data-link") || document.getElementById("archiveFrame").src;
-  navigator.clipboard.writeText(link).then(() => alert("✅ تم نسخ رابط الفيديو!"));
 }
 
 window.onload = loadDefaultVideos;
