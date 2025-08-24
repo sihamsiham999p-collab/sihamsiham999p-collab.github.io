@@ -1,245 +1,256 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>farsi youcef</title>
-  <style>
-    body {
-      background: #0a1c3a;
-      color: white;
-      font-family: sans-serif;
-      text-align: center;
-    }
-    .search-box {
-      margin: 20px;
-    }
-    input {
-      padding: 10px;
-      border-radius: 10px;
-      border: none;
-      width: 200px;
-    }
-    button {
-      padding: 10px 15px;
-      border-radius: 10px;
-      border: none;
-      background: #3cfcb3;
-      cursor: pointer;
-    }
-    .video-card {
-      background: #13274a;
-      margin: 15px auto;
-      padding: 10px;
-      border-radius: 12px;
-      width: 90%;
-      max-width: 800px;
-      position: relative;
-    }
-    iframe {
-      border-radius: 10px;
-      width: 100%;
-      height: 400px;
-    }
-    /* ✅ الشعار الدائري المتحرك */
-    .logo-overlay {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      width: 70px;
-      height: 70px;
-      background: #0077ff;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 18px;
-      font-weight: bold;
-      color: white;
-      font-family: "Arial Black", sans-serif;
-      box-shadow: 0 0 10px rgba(0, 119, 255, 0.7);
-      z-index: 10;
-      pointer-events: none;
-      text-shadow: 
-        1px 1px 0 #0044aa,
-        2px 2px 0 #003377,
-        3px 3px 5px rgba(0,0,0,0.6);
-      animation: spin 20s linear infinite;
-    }
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    .controls {
-      margin-top: 10px;
-    }
-    .controls button {
-      margin: 5px;
-    }
-    .video-list {
-      max-height: 400px;
-      overflow-y: auto;
-      margin-top: 15px;
-      padding: 10px;
-      background: #0f1e3f;
-      border-radius: 12px;
-    }
-    .video-list div {
-      margin: 10px 0;
-      cursor: pointer;
-      text-align: center;
-    }
-    .video-list img {
-      width: 90%;
-      max-width: 400px;
-      border-radius: 8px;
-      transition: transform 0.2s;
-    }
-    .video-list img:hover {
-      transform: scale(1.05);
-    }
-    .video-title {
-      font-size: 14px;
-      margin-top: 5px;
-      color: #ccc;
-    }
-    .load-more {
-      margin: 15px;
-    }
-    .no-results {
-      margin: 20px;
-      color: #ff8080;
-      font-size: 18px;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>farsi youcef</title>
+<style>
+  body {
+    background: #0a1c3a;
+    color: white;
+    font-family: sans-serif;
+    text-align: center;
+  }
+  .search-box {
+    margin: 20px;
+  }
+  input {
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    width: 200px;
+  }
+  button {
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: none;
+    background: #3cfcb3;
+    cursor: pointer;
+  }
+  .video-card {
+    background: #13274a;
+    margin: 15px auto;
+    padding: 10px;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 800px;
+    position: relative;
+  }
+  iframe {
+    border-radius: 10px;
+    width: 100%;
+    height: 400px;
+  }
+  .logo-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 70px;
+    height: 70px;
+    background: #0077ff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    font-family: "Arial Black", sans-serif;
+    box-shadow: 0 0 10px rgba(0, 119, 255, 0.7);
+    z-index: 10;
+    pointer-events: none;
+    text-shadow: 
+      1px 1px 0 #0044aa,
+      2px 2px 0 #003377,
+      3px 3px 5px rgba(0,0,0,0.6);
+    animation: spin 20s linear infinite;
+  }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .controls {
+    margin-top: 10px;
+  }
+  .controls button, .controls select {
+    margin: 5px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+  }
+  .video-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 15px;
+    padding: 10px;
+    background: #0f1e3f;
+    border-radius: 12px;
+  }
+  .video-list div {
+    margin: 10px 0;
+    cursor: pointer;
+    text-align: center;
+  }
+  .video-list img {
+    width: 90%;
+    max-width: 400px;
+    border-radius: 8px;
+    transition: transform 0.2s;
+  }
+  .video-list img:hover {
+    transform: scale(1.05);
+  }
+  .video-title {
+    font-size: 14px;
+    margin-top: 5px;
+    color: #ccc;
+  }
+  .current-quality {
+    font-size: 13px;
+    color: #3cfcb3;
+    margin-bottom: 5px;
+  }
+  .load-more {
+    margin: 15px;
+  }
+  .no-results {
+    margin: 20px;
+    color: #ff8080;
+    font-size: 18px;
+  }
+</style>
 </head>
 <body>
-  <h1>farsi youcef</h1>
+<h1>farsi youcef</h1>
 
-  <div class="search-box">
-    <input type="text" id="search" placeholder="اكتب للبحث في الأفلام">
-    <button onclick="startSearch()">بحث</button>
+<div class="search-box">
+  <input type="text" id="search" placeholder="اكتب للبحث في الأفلام">
+  <button onclick="startSearch()">بحث</button>
+</div>
+
+<div class="video-card" id="results">
+  <div class="logo-overlay">Farsi</div>
+
+  <iframe id="archiveFrame" src="about:blank" frameborder="0" allowfullscreen></iframe>
+
+  <div id="currentQualityDisplay" class="current-quality">الجودة: تلقائي</div>
+  <h3 id="videoTitle">فيديو</h3>
+
+  <div class="controls">
+    <button onclick="toggleFullscreen()">⛶ تكبير</button>
+    <a id="downloadBtn" href="#" target="_blank">
+      <button>⬇ تحميل الفيديو</button>
+    </a>
+    <button onclick="copyLink()">📋 نسخ الرابط</button>
+    <select id="qualitySelect" onchange="changeQuality()">
+      <option value="auto">⚡ تلقائي</option>
+      <option value="360">360p</option>
+      <option value="480">480p</option>
+      <option value="720">720p</option>
+    </select>
   </div>
+</div>
 
-  <!-- الفيديو الرئيسي -->
-  <div class="video-card" id="results">
-    <!-- ✅ الشعار المتحرك -->
-    <div class="logo-overlay">Farsi</div>
+<div class="video-list" id="videoList"></div>
+<div class="load-more">
+  <button onclick="loadMore()">⬇ تحميل المزيد</button>
+</div>
 
-    <iframe id="archiveFrame" src="about:blank" frameborder="0" allowfullscreen></iframe>
-    <h3 id="videoTitle">فيديو</h3>
-    <div class="controls">
-      <button onclick="toggleFullscreen()">⛶ تكبير</button>
-      <a id="downloadBtn" href="#" target="_blank">
-        <button>⬇ تحميل الفيديو</button>
-      </a>
-      <button onclick="copyLink()">📋 نسخ الرابط</button>
-    </div>
-  </div>
+<script>
+const state = {
+  currentPage: 1,
+  currentQuery: "",
+  currentVideoId: "",
+  currentQuality: "auto",
+};
 
-  <!-- قائمة فيديوهات -->
-  <div class="video-list" id="videoList"></div>
-  <div class="load-more">
-    <button onclick="loadMore()">⬇ تحميل المزيد</button>
-  </div>
+// 🚀 تحسين البحث وإعادة استخدام الكود
+async function fetchArchive(query, page = 1) {
+  const url = `https://archive.org/advancedsearch.php?q=${encodeURIComponent(query)}+AND+mediatype:(movies)&fl[]=identifier&fl[]=title&sort[]=downloads+desc&rows=20&page=${page}&output=json`;
+  const res = await fetch(url);
+  const data = await res.json();
+  return data.response.docs;
+}
 
-  <script>
-    let currentPage = 1;
-    let currentQuery = "";
+async function startSearch() {
+  state.currentPage = 1;
+  document.getElementById("videoList").innerHTML = "";
+  if (!document.getElementById("search").value.trim()) return;
+  state.currentQuery = document.getElementById("search").value;
+  const docs = await fetchArchive(state.currentQuery, state.currentPage);
+  showVideos(docs);
+}
 
-    function startSearch() {
-      currentPage = 1;
-      document.getElementById("videoList").innerHTML = "";
-      searchArchive();
-    }
+async function loadMore() {
+  state.currentPage++;
+  const docs = state.currentQuery ? await fetchArchive(state.currentQuery, state.currentPage) : await fetchArchive("mediatype:(movies)", state.currentPage);
+  showVideos(docs);
+}
 
-    async function searchArchive() {
-      let query = document.getElementById("search").value;
-      if (query.trim() === "") return;
-      currentQuery = query;
+function showVideos(docs) {
+  const listDiv = document.getElementById("videoList");
+  if (docs.length === 0 && state.currentPage === 1) {
+    listDiv.innerHTML = `<div class="no-results">❌ ماكانش فيديوهات</div>`;
+    return;
+  }
+  docs.forEach(doc => {
+    const thumb = `https://archive.org/services/img/${doc.identifier}`;
+    const div = document.createElement("div");
+    div.innerHTML = `
+      <img src="${thumb}" alt="${doc.title}" onclick="changeVideo('${doc.identifier}','${doc.title}')">
+      <div class="video-title">${doc.title}</div>
+    `;
+    listDiv.appendChild(div);
+  });
 
-      let url = `https://archive.org/advancedsearch.php?q=${encodeURIComponent(query)}+AND+mediatype:(movies)&fl[]=identifier&fl[]=title&sort[]=downloads+desc&rows=20&page=${currentPage}&output=json`;
+  if (state.currentPage === 1 && docs.length > 0) {
+    changeVideo(docs[0].identifier, docs[0].title);
+  }
+}
 
-      let response = await fetch(url);
-      let data = await response.json();
+function changeVideo(id, title) {
+  state.currentVideoId = id;
+  document.getElementById("videoTitle").innerText = title;
+  updateVideo();
+}
 
-      showVideos(data.response.docs);
-    }
+function updateVideo() {
+  const src = `https://archive.org/embed/${state.currentVideoId}${state.currentQuality !== 'auto' ? '?size=' + state.currentQuality : ''}`;
+  const downloadLink = `https://archive.org/download/${state.currentVideoId}${state.currentQuality !== 'auto' ? '?size=' + state.currentQuality : ''}`;
 
-    function loadMore() {
-      currentPage++;
-      if (currentQuery) {
-        searchArchive();
-      } else {
-        loadDefaultVideos();
-      }
-    }
+  document.getElementById("archiveFrame").src = src;
+  document.getElementById("downloadBtn").href = downloadLink;
+  document.getElementById("downloadBtn").setAttribute("data-link", src);
+  document.getElementById("currentQualityDisplay").innerText = "الجودة: " + (state.currentQuality === 'auto' ? "تلقائي" : state.currentQuality + "p");
 
-    function showVideos(docs) {
-      let listDiv = document.getElementById("videoList");
+  document.getElementById("results").scrollIntoView({ behavior: "smooth" });
+}
 
-      if (docs.length === 0 && currentPage === 1) {
-        listDiv.innerHTML = `<div class="no-results">❌ ماكانش فيديوهات</div>`;
-        return;
-      }
+function changeQuality() {
+  state.currentQuality = document.getElementById("qualitySelect").value;
+  updateVideo();
+}
 
-      docs.forEach(doc => {
-        let thumb = `https://archive.org/services/img/${doc.identifier}`;
-        let div = document.createElement("div");
-        div.innerHTML = `
-          <img src="${thumb}" alt="${doc.title}" onclick="changeVideo('${doc.identifier}','${doc.title}')">
-          <div class="video-title">${doc.title}</div>
-        `;
-        listDiv.appendChild(div);
-      });
+async function loadDefaultVideos() {
+  const docs = await fetchArchive("mediatype:(movies)", state.currentPage);
+  showVideos(docs);
+}
 
-      if (currentPage === 1 && docs.length > 0) {
-        changeVideo(docs[0].identifier, docs[0].title);
-      }
-    }
+function toggleFullscreen() {
+  const frame = document.getElementById("archiveFrame");
+  if (frame.requestFullscreen) frame.requestFullscreen();
+  else if (frame.mozRequestFullScreen) frame.mozRequestFullScreen();
+  else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
+  else if (frame.msRequestFullscreen) frame.msRequestFullscreen();
+}
 
-    function changeVideo(id, title) {
-      document.getElementById("archiveFrame").src = "https://archive.org/embed/" + id;
-      document.getElementById("videoTitle").innerText = title;
-      document.getElementById("downloadBtn").href = "https://archive.org/download/" + id;
-      document.getElementById("downloadBtn").setAttribute("data-link", "https://archive.org/embed/" + id);
+function copyLink() {
+  const link = document.getElementById("downloadBtn").getAttribute("data-link") || document.getElementById("archiveFrame").src;
+  navigator.clipboard.writeText(link).then(() => alert("✅ تم نسخ رابط الفيديو!"));
+}
 
-      document.getElementById("results").scrollIntoView({ behavior: "smooth" });
-    }
-
-    /* ✅ تحميل فيديوهات افتراضية عند بداية الصفحة */
-    async function loadDefaultVideos() {
-      let url = `https://archive.org/advancedsearch.php?q=mediatype:(movies)&fl[]=identifier&fl[]=title&sort[]=downloads+desc&rows=10&page=${currentPage}&output=json`;
-      let response = await fetch(url);
-      let data = await response.json();
-      showVideos(data.response.docs);
-    }
-
-    /* ✅ إصلاح تكبير الشاشة */
-    function toggleFullscreen() {
-      let frame = document.getElementById("archiveFrame");
-
-      if (frame.requestFullscreen) {
-        frame.requestFullscreen();
-      } else if (frame.mozRequestFullScreen) { // Firefox
-        frame.mozRequestFullScreen();
-      } else if (frame.webkitRequestFullscreen) { // Chrome, Safari
-        frame.webkitRequestFullscreen();
-      } else if (frame.msRequestFullscreen) { // IE/Edge
-        frame.msRequestFullscreen();
-      }
-    }
-
-    function copyLink() {
-      let link = document.getElementById("downloadBtn").getAttribute("data-link");
-      if (!link) link = document.getElementById("archiveFrame").src;
-      navigator.clipboard.writeText(link).then(() => {
-        alert("✅ تم نسخ رابط الفيديو!");
-      });
-    }
-
-    // ⏳ تحميل فيديوهات افتراضية أول ما تفتح الصفحة
-    window.onload = loadDefaultVideos;
-  </script>
+window.onload = loadDefaultVideos;
+</script>
 </body>
 </html>
