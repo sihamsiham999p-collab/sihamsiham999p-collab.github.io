@@ -4,36 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>farsi youcef</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 <style>
   body {
     background: #0a1c3a;
     color: white;
     font-family: sans-serif;
     text-align: center;
+    margin: 0;
+    padding: 0;
   }
   .site-logo {
     font-family: "Arial Black", sans-serif;
-    font-size: 48px;
+    font-size: 40px;
     font-weight: bold;
     color: #3cfcb3;
-    text-shadow:
-      2px 2px 0 #007766,
-      4px 4px 8px rgba(0, 0, 0, 0.6);
-    margin: 20px 0;
+    text-shadow: 2px 2px 0 #007766, 4px 4px 8px rgba(0, 0, 0, 0.6);
+    margin: 15px 0;
     display: inline-block;
-    padding: 10px 25px;
+    padding: 8px 20px;
     background: rgba(0, 60, 50, 0.25);
     border-radius: 14px;
     box-shadow: 0 4px 15px rgba(60, 252, 179, 0.3);
   }
-  .search-box {
-    margin: 20px;
-  }
+  .search-box { margin: 15px; }
   input {
     padding: 10px;
     border-radius: 10px;
     border: none;
-    width: 200px;
+    width: 70%;
+    max-width: 250px;
   }
   button {
     padding: 10px 15px;
@@ -41,13 +42,15 @@
     border: none;
     background: #3cfcb3;
     cursor: pointer;
+    font-weight: bold;
   }
+  button:hover { background: #2abf8b; }
   .video-card {
     background: #13274a;
-    margin: 15px auto;
+    margin: 10px auto;
     padding: 10px;
     border-radius: 12px;
-    width: 90%;
+    width: 95%;
     max-width: 800px;
     position: relative;
   }
@@ -56,44 +59,44 @@
     width: 100%;
     height: 400px;
   }
+  @media (max-width: 600px) {
+    iframe { height: 220px; }
+    .site-logo { font-size: 28px; padding: 6px 12px; }
+  }
   .logo-overlay {
     position: absolute;
     top: 10px;
     right: 10px;
-    width: 70px;
-    height: 70px;
+    width: 65px;
+    height: 65px;
     background: #0077ff;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 18px;
+    font-size: 16px;
     font-weight: bold;
     color: white;
     font-family: "Arial Black", sans-serif;
     box-shadow: 0 0 10px rgba(0, 119, 255, 0.7);
     z-index: 10;
     pointer-events: none;
-    text-shadow: 
-      1px 1px 0 #0044aa,
-      2px 2px 0 #003377,
-      3px 3px 5px rgba(0,0,0,0.6);
     animation: spin 20s linear infinite;
   }
-  @keyframes spin {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-  }
-  .controls {
-    margin-top: 10px;
-  }
+  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+  .controls { margin-top: 10px; }
   .controls button, .controls select {
     margin: 5px;
     padding: 8px 12px;
     border-radius: 8px;
     border: none;
     cursor: pointer;
+    font-weight: bold;
   }
+  .controls button { background: #3cfcb3; }
+  .controls button:hover { background: #2abf8b; }
+  #downloadBtn { background: #2ecc71; }
+  #downloadBtn:hover { background: #27ae60; }
   .video-list {
     max-height: 400px;
     overflow-y: auto;
@@ -111,7 +114,6 @@
     background: #1a2b4d;
     border-radius: 8px;
     padding: 5px;
-    transition: border 0.2s, box-shadow 0.2s;
     cursor: pointer;
   }
   .video-list-item:hover,
@@ -120,35 +122,14 @@
     box-shadow: 0 0 10px rgba(60, 252, 179, 0.5);
   }
   .video-list img {
-    width: 150px;
-    height: auto;
+    width: 120px;
     border-radius: 6px;
     margin-left: 10px;
-    flex-shrink: 0;
   }
-  .video-title {
-    font-size: 14px;
-    color: #ccc;
-    text-align: right;
-    flex: 1;
-  }
-  .current-quality {
-    font-size: 13px;
-    color: #3cfcb3;
-    margin-bottom: 5px;
-  }
-  .no-results {
-    margin: 20px;
-    color: #ff8080;
-    font-size: 18px;
-  }
-  .loading-container {
-    display: none;
-    margin: 15px;
-    text-align: center;
-    color: #3cfcb3;
-    font-size: 14px;
-  }
+  .video-title { font-size: 14px; color: #ccc; text-align: right; flex: 1; }
+  .current-quality { font-size: 13px; color: #3cfcb3; margin-bottom: 5px; }
+  .no-results { margin: 20px; color: #ff8080; font-size: 18px; }
+  .loading-container { display: none; margin: 15px; text-align: center; color: #3cfcb3; font-size: 14px; }
   .loading-spinner {
     border: 4px solid #3cfcb3;
     border-top: 4px solid transparent;
@@ -158,6 +139,25 @@
     margin: 0 auto 8px;
     animation: spin 1s linear infinite;
   }
+  /* قائمة التحميل */
+  #downloadOptions {
+    display: none;
+    margin-top: 8px;
+    padding: 8px;
+    background: #1a2b4d;
+    border-radius: 8px;
+  }
+  #downloadOptions a {
+    display: block;
+    color: #3cfcb3;
+    padding: 5px;
+    text-decoration: none;
+    border-radius: 6px;
+  }
+  #downloadOptions a:hover {
+    background: #2abf8b;
+    color: white;
+  }
 </style>
 </head>
 <body>
@@ -165,7 +165,7 @@
 
 <div class="search-box">
   <input type="text" id="search" placeholder="اكتب للبحث في الأفلام">
-  <button onclick="startSearch()">بحث</button>
+  <button onclick="startSearch()"><i class="fas fa-search"></i> بحث</button>
 </div>
 
 <div class="video-card" id="results">
@@ -177,14 +177,18 @@
   <h3 id="videoTitle">فيديو</h3>
 
   <div class="controls">
-    <button onclick="toggleFullscreen()">⛶ تكبير</button>
+    <button onclick="toggleFullscreen()"><i class="fas fa-expand"></i> تكبير</button>
     <select id="qualitySelect" onchange="changeQuality()">
       <option value="auto">⚡ تلقائي</option>
       <option value="360">360p</option>
       <option value="480">480p</option>
       <option value="720">720p</option>
     </select>
+    <!-- زر تحميل -->
+    <button id="downloadBtn" onclick="downloadVideo()"><i class="fas fa-download"></i> تحميل</button>
   </div>
+  <!-- القائمة المنسدلة للتحميل -->
+  <div id="downloadOptions"></div>
 </div>
 
 <div class="video-list" id="videoList"></div>
@@ -272,12 +276,11 @@ function changeVideo(id, title, element) {
 
 function updateVideo() {
   const src = `https://archive.org/embed/${state.currentVideoId}${state.currentQuality !== 'auto' ? '?size=' + state.currentQuality : ''}`;
-  document.getElementById("loading").style.display = "block"; // يبان المؤشر
+  document.getElementById("loading").style.display = "block";
   document.getElementById("archiveFrame").src = src;
   document.getElementById("currentQualityDisplay").innerText = "الجودة: " + (state.currentQuality === 'auto' ? "تلقائي" : state.currentQuality + "p");
   document.getElementById("results").scrollIntoView({ behavior: "smooth" });
 
-  // نخلي المؤشر يختفي بعد 3 ثواني
   setTimeout(() => {
     document.getElementById("loading").style.display = "none";
   }, 3000);
@@ -303,7 +306,36 @@ function toggleFullscreen() {
   else if (frame.msRequestFullscreen) frame.msRequestFullscreen();
 }
 
-// 🚀 التمرير التلقائي (infinite scroll)
+async function downloadVideo() {
+  if (!state.currentVideoId) return;
+
+  try {
+    const url = `https://archive.org/metadata/${state.currentVideoId}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    // نعرض جميع الملفات الفيديو
+    const videoFiles = data.files.filter(f => f.name.match(/\.(mp4|mkv|ogg|webm)$/i));
+    const container = document.getElementById("downloadOptions");
+    container.innerHTML = "";
+
+    if (videoFiles.length > 0) {
+      container.style.display = "block";
+      videoFiles.forEach(file => {
+        const link = document.createElement("a");
+        link.href = `https://archive.org/download/${state.currentVideoId}/${file.name}`;
+        link.target = "_blank";
+        link.innerText = `⬇ ${file.name} (${Math.round((file.size || 0) / (1024*1024))} MB)`;
+        container.appendChild(link);
+      });
+    } else {
+      alert("❌ هذا الفيديو ماعندوش ملفات فيديو متاحة.");
+    }
+  } catch (e) {
+    alert("⚠️ خطأ في جلب روابط التحميل.");
+  }
+}
+
 document.getElementById("videoList").addEventListener("scroll", async function () {
   const list = this;
   if (list.scrollTop + list.clientHeight >= list.scrollHeight - 50) {
