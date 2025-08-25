@@ -17,17 +17,45 @@
   }
   .site-logo {
     font-family: "Arial Black", sans-serif;
-    font-size: 40px;
+    font-size: 65px;
     font-weight: bold;
     color: #3cfcb3;
-    text-shadow: 2px 2px 0 #007766, 4px 4px 8px rgba(0, 0, 0, 0.6);
-    margin: 15px 0;
+    text-shadow: 
+      0 0 8px rgba(255, 0, 0, 0.8),
+      0 0 16px rgba(255, 0, 0, 0.6),
+      0 0 24px rgba(255, 0, 0, 0.4),
+      2px 2px 0 #004d40,
+      4px 4px 6px rgba(0, 0, 0, 0.7);
+    margin: 20px 0;
     display: inline-block;
-    padding: 8px 20px;
+    padding: 12px 25px;
     background: rgba(0, 60, 50, 0.25);
-    border-radius: 14px;
-    box-shadow: 0 4px 15px rgba(60, 252, 179, 0.3);
+    border-radius: 20px;
+    box-shadow: 0 6px 20px rgba(60, 252, 179, 0.3);
+    animation: glowPulse 6s infinite;
   }
+
+  @keyframes glowPulse {
+    0% {
+      text-shadow: 0 0 12px red, 0 0 24px red, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7);
+    }
+    20% {
+      text-shadow: 0 0 12px blue, 0 0 24px blue, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7);
+    }
+    40% {
+      text-shadow: 0 0 12px green, 0 0 24px green, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7);
+    }
+    60% {
+      text-shadow: 0 0 12px yellow, 0 0 24px yellow, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7);
+    }
+    80% {
+      text-shadow: 0 0 12px magenta, 0 0 24px magenta, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7);
+    }
+    100% {
+      text-shadow: 0 0 12px cyan, 0 0 24px cyan, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7);
+    }
+  }
+
   .search-box { margin: 15px; }
   input {
     padding: 10px;
@@ -61,7 +89,7 @@
   }
   @media (max-width: 600px) {
     iframe { height: 220px; }
-    .site-logo { font-size: 28px; padding: 6px 12px; }
+    .site-logo { font-size: 40px; padding: 8px 16px; }
   }
   .logo-overlay {
     position: absolute;
@@ -139,7 +167,6 @@
     margin: 0 auto 8px;
     animation: spin 1s linear infinite;
   }
-  /* قائمة التحميل */
   #downloadOptions {
     display: none;
     margin-top: 8px;
@@ -157,6 +184,13 @@
   #downloadOptions a:hover {
     background: #2abf8b;
     color: white;
+  }
+  #qualityDownloadOptions {
+    display: none;
+    margin-top: 8px;
+    padding: 8px;
+    background: #1a2b4d;
+    border-radius: 8px;
   }
 </style>
 </head>
@@ -184,11 +218,10 @@
       <option value="480">480p</option>
       <option value="720">720p</option>
     </select>
-    <!-- زر تحميل -->
     <button id="downloadBtn" onclick="downloadVideo()"><i class="fas fa-download"></i> تحميل</button>
   </div>
-  <!-- القائمة المنسدلة للتحميل -->
   <div id="downloadOptions"></div>
+  <div id="qualityDownloadOptions"></div>
 </div>
 
 <div class="video-list" id="videoList"></div>
@@ -314,19 +347,46 @@ async function downloadVideo() {
     const res = await fetch(url);
     const data = await res.json();
 
-    // نعرض جميع الملفات الفيديو
     const videoFiles = data.files.filter(f => f.name.match(/\.(mp4|mkv|ogg|webm)$/i));
     const container = document.getElementById("downloadOptions");
+    const qualityContainer = document.getElementById("qualityDownloadOptions");
     container.innerHTML = "";
+    qualityContainer.innerHTML = "";
+    container.style.display = "none";
+    qualityContainer.style.display = "none";
 
     if (videoFiles.length > 0) {
       container.style.display = "block";
+      qualityContainer.style.display = "block";
+
       videoFiles.forEach(file => {
+        let qualityMatch = file.name.match(/(\d{3,4})p/);
+        let quality = qualityMatch ? qualityMatch[1] + "p" : "غير معروف";
+
         const link = document.createElement("a");
         link.href = `https://archive.org/download/${state.currentVideoId}/${file.name}`;
         link.target = "_blank";
         link.innerText = `⬇ ${file.name} (${Math.round((file.size || 0) / (1024*1024))} MB)`;
         container.appendChild(link);
+
+        const dlBtn = document.createElement("button");
+        dlBtn.innerText = `تنزيل مباشر (${quality})`;
+        dlBtn.style.margin = "5px";
+        dlBtn.style.padding = "6px 12px";
+        dlBtn.style.border = "none";
+        dlBtn.style.borderRadius = "8px";
+        dlBtn.style.cursor = "pointer";
+        dlBtn.style.background = "#3498db";
+        dlBtn.style.color = "white";
+        dlBtn.onclick = () => {
+          const a = document.createElement("a");
+          a.href = `https://archive.org/download/${state.currentVideoId}/${file.name}`;
+          a.download = file.name;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+        };
+        qualityContainer.appendChild(dlBtn);
       });
     } else {
       alert("❌ هذا الفيديو ماعندوش ملفات فيديو متاحة.");
