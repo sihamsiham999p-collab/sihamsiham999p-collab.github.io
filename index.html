@@ -11,7 +11,6 @@
     font-family: sans-serif;
     text-align: center;
   }
-  /* شعار احترافي */
   .site-logo {
     font-family: "Arial Black", sans-serif;
     font-size: 48px;
@@ -138,13 +137,26 @@
     color: #3cfcb3;
     margin-bottom: 5px;
   }
-  .load-more {
-    margin: 15px;
-  }
   .no-results {
     margin: 20px;
     color: #ff8080;
     font-size: 18px;
+  }
+  .loading-container {
+    display: none;
+    margin: 15px;
+    text-align: center;
+    color: #3cfcb3;
+    font-size: 14px;
+  }
+  .loading-spinner {
+    border: 4px solid #3cfcb3;
+    border-top: 4px solid transparent;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    margin: 0 auto 8px;
+    animation: spin 1s linear infinite;
   }
 </style>
 </head>
@@ -176,8 +188,9 @@
 </div>
 
 <div class="video-list" id="videoList"></div>
-<div class="load-more">
-  <button onclick="loadMore()">⬇ تحميل المزيد</button>
+<div class="loading-container" id="loading">
+  <div class="loading-spinner"></div>
+  <div>جارٍ التحميل...</div>
 </div>
 
 <script>
@@ -186,6 +199,7 @@ const state = {
   currentQuery: "",
   currentVideoId: "",
   currentQuality: "auto",
+  loading: false
 };
 
 async function fetchArchive(query, page = 1) {
@@ -200,14 +214,25 @@ async function startSearch() {
   document.getElementById("videoList").innerHTML = "";
   if (!document.getElementById("search").value.trim()) return;
   state.currentQuery = document.getElementById("search").value;
+  document.getElementById("loading").style.display = "block";
   const docs = await fetchArchive(state.currentQuery, state.currentPage);
+  document.getElementById("loading").style.display = "none";
   showVideos(docs);
 }
 
 async function loadMore() {
+  if (state.loading) return;
+  state.loading = true;
+  document.getElementById("loading").style.display = "block";
+
   state.currentPage++;
-  const docs = state.currentQuery ? await fetchArchive(state.currentQuery, state.currentPage) : await fetchArchive("mediatype:(movies)", state.currentPage);
+  const docs = state.currentQuery 
+      ? await fetchArchive(state.currentQuery, state.currentPage) 
+      : await fetchArchive("mediatype:(movies)", state.currentPage);
+  
   showVideos(docs);
+  state.loading = false;
+  document.getElementById("loading").style.display = "none";
 }
 
 function showVideos(docs) {
@@ -247,9 +272,15 @@ function changeVideo(id, title, element) {
 
 function updateVideo() {
   const src = `https://archive.org/embed/${state.currentVideoId}${state.currentQuality !== 'auto' ? '?size=' + state.currentQuality : ''}`;
+  document.getElementById("loading").style.display = "block"; // يبان المؤشر
   document.getElementById("archiveFrame").src = src;
   document.getElementById("currentQualityDisplay").innerText = "الجودة: " + (state.currentQuality === 'auto' ? "تلقائي" : state.currentQuality + "p");
   document.getElementById("results").scrollIntoView({ behavior: "smooth" });
+
+  // نخلي المؤشر يختفي بعد 3 ثواني
+  setTimeout(() => {
+    document.getElementById("loading").style.display = "none";
+  }, 3000);
 }
 
 function changeQuality() {
@@ -258,7 +289,9 @@ function changeQuality() {
 }
 
 async function loadDefaultVideos() {
+  document.getElementById("loading").style.display = "block";
   const docs = await fetchArchive("mediatype:(movies)", state.currentPage);
+  document.getElementById("loading").style.display = "none";
   showVideos(docs);
 }
 
@@ -269,6 +302,14 @@ function toggleFullscreen() {
   else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
   else if (frame.msRequestFullscreen) frame.msRequestFullscreen();
 }
+
+// 🚀 التمرير التلقائي (infinite scroll)
+document.getElementById("videoList").addEventListener("scroll", async function () {
+  const list = this;
+  if (list.scrollTop + list.clientHeight >= list.scrollHeight - 50) {
+    await loadMore();
+  }
+});
 
 window.onload = loadDefaultVideos;
 </script>
