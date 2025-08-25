@@ -153,13 +153,29 @@ function showVideos(docs){
 function changeVideo(id,title,element){
   state.currentVideoId=id;
   document.getElementById("videoTitle").innerText=title;
-  document.getElementById("archiveFrame").src=`https://archive.org/embed/${id}${state.currentQuality!=="auto"?`?size=${state.currentQuality}`:""}`;
+
+  // ✅ تشغيل الفيديو مباشرة مع autoplay
+  const autoplay = state.currentQuality !== "auto" 
+    ? `?autoplay=1&size=${state.currentQuality}`
+    : `?autoplay=1`;
+  document.getElementById("archiveFrame").src=`https://archive.org/embed/${id}${autoplay}`;
+
   document.getElementById("currentQualityDisplay").innerText="الجودة: "+(state.currentQuality==="auto"?"تلقائي":state.currentQuality+"p");
   document.querySelectorAll(".video-list-item").forEach(el=>el.classList.remove("active"));
   if(element) element.classList.add("active");
+
+  // ✅ يرجع تلقائيا للأعلى لشاشة العرض
+  document.getElementById("results").scrollIntoView({behavior:"smooth"});
 }
 
-function updateVideo(){ if(!state.currentVideoId) return; document.getElementById("archiveFrame").src=`https://archive.org/embed/${state.currentVideoId}${state.currentQuality!=="auto"?`?size=${state.currentQuality}`:""}`; document.getElementById("currentQualityDisplay").innerText="الجودة: "+(state.currentQuality==="auto"?"تلقائي":state.currentQuality+"p"); }
+function updateVideo(){ 
+  if(!state.currentVideoId) return; 
+  const autoplay = state.currentQuality !== "auto" 
+    ? `?autoplay=1&size=${state.currentQuality}`
+    : `?autoplay=1`;
+  document.getElementById("archiveFrame").src=`https://archive.org/embed/${state.currentVideoId}${autoplay}`; 
+  document.getElementById("currentQualityDisplay").innerText="الجودة: "+(state.currentQuality==="auto"?"تلقائي":state.currentQuality+"p"); 
+}
 
 function changeQuality(){ state.currentQuality=document.getElementById("qualitySelect").value; updateVideo(); }
 async function loadDefaultVideos(){ document.getElementById("loading").style.display="block"; const docs=await fetchArchive("mediatype:(movies)",state.currentPage); document.getElementById("loading").style.display="none"; showVideos(docs); }
