@@ -30,12 +30,12 @@
     animation: glowPulse 6s infinite;
   }
   @keyframes glowPulse {
-    0% { text-shadow: 0 0 12px red,0 0 24px red,2px 2px 0 #004d40,4px 4px 6px rgba(0,0,0,0.7); }
-    20% { text-shadow: 0 0 12px blue,0 0 24px blue,2px 2px 0 #004d40,4px 4px 6px rgba(0,0,0,0.7); }
-    40% { text-shadow: 0 0 12px green,0 0 24px green,2px 2px 0 #004d40,4px 4px 6px rgba(0,0,0,0.7); }
-    60% { text-shadow: 0 0 12px yellow,0 0 24px yellow,2px 2px 0 #004d40,4px 4px 6px rgba(0,0,0,0.7); }
-    80% { text-shadow: 0 0 12px magenta,0 0 24px magenta,2px 2px 0 #004d40,4px 4px 6px rgba(0,0,0,0.7); }
-    100% { text-shadow: 0 0 12px cyan,0 0 24px cyan,2px 2px 0 #004d40,4px 4px 6px rgba(0,0,0,0.7); }
+    0% { text-shadow: 0 0 12px red,0 0 24px red; }
+    20% { text-shadow: 0 0 12px blue,0 0 24px blue; }
+    40% { text-shadow: 0 0 12px green,0 0 24px green; }
+    60% { text-shadow: 0 0 12px yellow,0 0 24px yellow; }
+    80% { text-shadow: 0 0 12px magenta,0 0 24px magenta; }
+    100% { text-shadow: 0 0 12px cyan,0 0 24px cyan; }
   }
   .search-box { margin: 15px; }
   input { padding: 10px; border-radius: 10px; border: none; width: 70%; max-width: 250px; }
@@ -43,8 +43,8 @@
   button:hover { background: #2abf8b; }
 
   .video-card { background: #13274a; margin: 10px auto; padding: 10px; border-radius: 12px; width: 95%; max-width: 800px; position: relative; }
-  iframe { border-radius: 10px; width: 100%; height: 400px; }
-  @media (max-width:600px){ iframe{height:220px;} .site-logo{font-size:40px;padding:8px 16px;} }
+  video { border-radius: 10px; width: 100%; height: 400px; background:black; }
+  @media (max-width:600px){ video{height:220px;} .site-logo{font-size:40px;padding:8px 16px;} }
 
   .logo-overlay { position:absolute; top:10px; right:10px; width:65px; height:65px; background:#0077ff; border-radius:50%; display:flex; justify-content:center; align-items:center; font-size:16px; font-weight:bold; color:white; font-family:"Arial Black",sans-serif; box-shadow:0 0 10px rgba(0,119,255,0.7); z-index:10; pointer-events:none; animation:spin 20s linear infinite; }
   @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
@@ -62,15 +62,14 @@
   .video-title{ font-size:14px; color:#ccc; text-align:right; flex:1; }
   .current-quality{ font-size:13px; color:#3cfcb3; margin-bottom:5px; }
 
-  .no-results{ margin:20px; color:#ff4d4d; font-size:18px; font-weight:bold; text-shadow:0 0 6px #ff4d4d,0 0 12px #ff1a1a; animation:messageGlow 2s infinite alternate; }
-  @keyframes messageGlow{0%{text-shadow:0 0 6px #ff4d4d,0 0 12px #ff1a1a;} 25%{text-shadow:0 0 6px #ffb84d,0 0 12px #ffaa1a;} 50%{text-shadow:0 0 6px #4dff4d,0 0 12px #1aff1a;} 75%{text-shadow:0 0 6px #4d4dff,0 0 12px #1a1aff;} 100%{text-shadow:0 0 6px #ff4dff,0 0 12px #ff1aff;} }
+  .no-results{ margin:20px; color:#ff4d4d; font-size:18px; font-weight:bold; text-shadow:0 0 6px #ff4d4d,0 0 12px #ff1a1a; }
 
   .loading-container{ display:none; margin:15px; text-align:center; color:#3cfcb3; font-size:14px; }
   .loading-spinner{ border:4px solid #3cfcb3; border-top:4px solid transparent; border-radius:50%; width:30px; height:30px; margin:0 auto 8px; animation:spin 1s linear infinite; }
 
-  #downloadOptions,#qualityDownloadOptions{ display:none; margin-top:8px; padding:8px; background:#1a2b4d; border-radius:8px; }
-  #downloadOptions a,#qualityDownloadOptions button{ color:#3cfcb3; padding:5px; text-decoration:none; border-radius:6px; display:block; margin:3px 0; }
-  #downloadOptions a:hover,#qualityDownloadOptions button:hover{ background:#2abf8b; color:white; }
+  #downloadOptions{ display:none; margin-top:8px; padding:8px; background:#1a2b4d; border-radius:8px; }
+  #downloadOptions a{ color:#3cfcb3; padding:5px; text-decoration:none; border-radius:6px; display:block; margin:3px 0; }
+  #downloadOptions a:hover{ background:#2abf8b; color:white; }
 </style>
 </head>
 <body>
@@ -83,7 +82,10 @@
 
 <div class="video-card" id="results">
   <div class="logo-overlay">Farsi</div>
-  <iframe id="archiveFrame" src="about:blank" frameborder="0" allowfullscreen></iframe>
+  <video id="videoPlayer" controls>
+    <source src="" type="video/mp4">
+    متصفحك لا يدعم الفيديو.
+  </video>
   <div id="currentQualityDisplay" class="current-quality">الجودة: تلقائي</div>
   <h3 id="videoTitle">فيديو</h3>
   <div class="controls">
@@ -94,10 +96,9 @@
       <option value="480">480p</option>
       <option value="720">720p</option>
     </select>
-    <button id="downloadBtn" onclick="downloadVideo()"><i class="fas fa-download"></i> تحميل</button>
+    <button id="downloadBtn" onclick="toggleDownloadOptions()"><i class="fas fa-download"></i> تحميل</button>
   </div>
   <div id="downloadOptions"></div>
-  <div id="qualityDownloadOptions"></div>
 </div>
 
 <div class="video-list" id="videoList"></div>
@@ -107,11 +108,17 @@
 </div>
 
 <script>
-const state={currentPage:1,currentQuery:"",currentVideoId:"",currentQuality:"auto",loading:false};
+const state={currentPage:1,currentQuery:"",currentVideoId:"",currentTitle:"",files:[],currentQuality:"auto",loading:false};
 
 async function fetchArchive(query,page=1){
   const url=`https://archive.org/advancedsearch.php?q=${encodeURIComponent(query)}+AND+mediatype:(movies)&fl[]=identifier&fl[]=title&sort[]=downloads+desc&rows=20&page=${page}&output=json`;
   const res=await fetch(url); const data=await res.json(); return data.response.docs;
+}
+
+async function fetchFiles(id){
+  const url=`https://archive.org/metadata/${id}`;
+  const res=await fetch(url); const data=await res.json();
+  return data.files.filter(f=>f.format==="MPEG4"||f.name.endsWith(".mp4"));
 }
 
 async function startSearch(){
@@ -144,26 +151,52 @@ function showVideos(docs){
     div.innerHTML=`<img src="https://archive.org/services/img/${doc.identifier}" alt="${doc.title}"><div class="video-title">${doc.title}</div>`;
     listDiv.appendChild(div);
   });
-  if(state.currentPage===1&&docs.length>0){
-    const first=listDiv.querySelector(".video-list-item");
-    if(first) { first.classList.add("active"); changeVideo(docs[0].identifier,docs[0].title,first); }
-  }
 }
 
-function changeVideo(id,title,element){
+async function changeVideo(id,title,element){
   state.currentVideoId=id;
+  state.currentTitle=title;
   document.getElementById("videoTitle").innerText=title;
-  document.getElementById("archiveFrame").src=`https://archive.org/embed/${id}${state.currentQuality!=="auto"?`?size=${state.currentQuality}`:""}`;
-  document.getElementById("currentQualityDisplay").innerText="الجودة: "+(state.currentQuality==="auto"?"تلقائي":state.currentQuality+"p");
+  state.files=await fetchFiles(id);
+  playVideo();
   document.querySelectorAll(".video-list-item").forEach(el=>el.classList.remove("active"));
   if(element) element.classList.add("active");
 }
 
-function updateVideo(){ if(!state.currentVideoId) return; document.getElementById("archiveFrame").src=`https://archive.org/embed/${state.currentVideoId}${state.currentQuality!=="auto"?`?size=${state.currentQuality}`:""}`; document.getElementById("currentQualityDisplay").innerText="الجودة: "+(state.currentQuality==="auto"?"تلقائي":state.currentQuality+"p"); }
+function playVideo(){
+  const player=document.getElementById("videoPlayer");
+  let file;
+  if(state.currentQuality==="auto"){ file=state.files[0]; }
+  else{
+    file=state.files.find(f=>f.name.includes(state.currentQuality))||state.files[0];
+  }
+  if(file){ player.src=`https://archive.org/download/${state.currentVideoId}/${file.name}`; player.play(); }
+  document.getElementById("currentQualityDisplay").innerText="الجودة: "+(state.currentQuality==="auto"?"تلقائي":state.currentQuality+"p");
+  buildDownloadOptions();
+}
 
-function changeQuality(){ state.currentQuality=document.getElementById("qualitySelect").value; updateVideo(); }
+function changeQuality(){ state.currentQuality=document.getElementById("qualitySelect").value; playVideo(); }
+
+function toggleFullscreen(){ const video=document.getElementById("videoPlayer"); if(video.requestFullscreen) video.requestFullscreen(); }
+
+function buildDownloadOptions(){
+  const div=document.getElementById("downloadOptions");
+  div.innerHTML="";
+  state.files.forEach(f=>{
+    const a=document.createElement("a");
+    a.href=`https://archive.org/download/${state.currentVideoId}/${f.name}`;
+    a.textContent=`تحميل (${f.name})`;
+    a.download=f.name;
+    div.appendChild(a);
+  });
+}
+
+function toggleDownloadOptions(){
+  const div=document.getElementById("downloadOptions");
+  div.style.display=(div.style.display==="block")?"none":"block";
+}
+
 async function loadDefaultVideos(){ document.getElementById("loading").style.display="block"; const docs=await fetchArchive("mediatype:(movies)",state.currentPage); document.getElementById("loading").style.display="none"; showVideos(docs); }
-function toggleFullscreen(){ const frame=document.getElementById("archiveFrame"); if(frame.requestFullscreen) frame.requestFullscreen(); else if(frame.mozRequestFullScreen) frame.mozRequestFullScreen(); else if(frame.webkitRequestFullscreen) frame.webkitRequestFullscreen(); else if(frame.msRequestFullscreen) frame.msRequestFullscreen(); }
 
 document.getElementById("videoList").addEventListener("scroll",async function(){ const list=this; if(list.scrollTop+list.clientHeight>=list.scrollHeight-50) await loadMore(); });
 
