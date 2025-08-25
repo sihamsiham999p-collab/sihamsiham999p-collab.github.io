@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>farsi youcef</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
   body {
@@ -27,8 +27,6 @@
     background: rgba(0,60,50,0.25);
     border-radius: 20px;
     box-shadow: 0 6px 20px rgba(60,252,179,0.3);
-    /* Tell the browser to optimize for future changes to 'text-shadow' for smoother animation */
-    will-change: text-shadow;
     animation: glowPulse 6s infinite;
   }
   @keyframes glowPulse {
@@ -48,10 +46,7 @@
   iframe { border-radius: 10px; width: 100%; height: 400px; }
   @media (max-width:600px){ iframe{height:220px;} .site-logo{font-size:40px;padding:8px 16px;} }
 
-  .logo-overlay { position:absolute; top:10px; right:10px; width:65px; height:65px; background:#0077ff; border-radius:50%; display:flex; justify-content:center; align-items:center; font-size:16px; font-weight:bold; color:white; font-family:"Arial Black",sans-serif; box-shadow:0 0 10px rgba(0,119,255,0.7); z-index:10; pointer-events:none;
-    /* Use 'will-change' to hint that 'transform' will be animated */
-    will-change: transform;
-    animation:spin 20s linear infinite; }
+  .logo-overlay { position:absolute; top:10px; right:10px; width:65px; height:65px; background:#0077ff; border-radius:50%; display:flex; justify-content:center; align-items:center; font-size:16px; font-weight:bold; color:white; font-family:"Arial Black",sans-serif; box-shadow:0 0 10px rgba(0,119,255,0.7); z-index:10; pointer-events:none; animation:spin 20s linear infinite; }
   @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
   .controls { margin-top:10px; }
@@ -67,10 +62,7 @@
   .video-title{ font-size:14px; color:#ccc; text-align:right; flex:1; }
   .current-quality{ font-size:13px; color:#3cfcb3; margin-bottom:5px; }
 
-  .no-results{ margin:20px; color:#ff4d4d; font-size:18px; font-weight:bold; text-shadow:0 0 6px #ff4d4d,0 0 12px #ff1a1a;
-    /* Use 'will-change' to hint that 'text-shadow' will be animated */
-    will-change: text-shadow;
-    animation:messageGlow 2s infinite alternate; }
+  .no-results{ margin:20px; color:#ff4d4d; font-size:18px; font-weight:bold; text-shadow:0 0 6px #ff4d4d,0 0 12px #ff1a1a; animation:messageGlow 2s infinite alternate; }
   @keyframes messageGlow{0%{text-shadow:0 0 6px #ff4d4d,0 0 12px #ff1a1a;} 25%{text-shadow:0 0 6px #ffb84d,0 0 12px #ffaa1a;} 50%{text-shadow:0 0 6px #4dff4d,0 0 12px #1aff1a;} 75%{text-shadow:0 0 6px #4d4dff,0 0 12px #1a1aff;} 100%{text-shadow:0 0 6px #ff4dff,0 0 12px #ff1aff;} }
 
   .loading-container{ display:none; margin:15px; text-align:center; color:#3cfcb3; font-size:14px; }
@@ -115,115 +107,67 @@
 </div>
 
 <script>
-// Cache DOM elements for faster access
-const videoListDiv = document.getElementById("videoList");
-const loadingDiv = document.getElementById("loading");
-const archiveFrame = document.getElementById("archiveFrame");
-const currentQualityDisplay = document.getElementById("currentQualityDisplay");
-const videoTitle = document.getElementById("videoTitle");
-const resultsDiv = document.getElementById("results");
-
 const state={currentPage:1,currentQuery:"",currentVideoId:"",currentQuality:"auto",loading:false};
 
 async function fetchArchive(query,page=1){
   const url=`https://archive.org/advancedsearch.php?q=${encodeURIComponent(query)}+AND+mediatype:(movies)&fl[]=identifier&fl[]=title&sort[]=downloads+desc&rows=20&page=${page}&output=json`;
-  try {
-    const res = await fetch(url);
-    const data = await res.json();
-    return data.response.docs;
-  } catch (error) {
-    console.error("Fetch error:", error);
-    return [];
-  }
+  const res=await fetch(url); const data=await res.json(); return data.response.docs;
 }
 
 async function startSearch(){
   state.currentPage=1;
-  videoListDiv.innerHTML="";
+  document.getElementById("videoList").innerHTML="";
   const val=document.getElementById("search").value.trim();
   if(!val) return;
   state.currentQuery=val;
-  loadingDiv.style.display="block";
+  document.getElementById("loading").style.display="block";
   const docs=await fetchArchive(state.currentQuery,state.currentPage);
-  loadingDiv.style.display="none";
+  document.getElementById("loading").style.display="none";
   showVideos(docs);
 }
 
 async function loadMore(){
   if(state.loading) return;
   state.loading=true;
-  loadingDiv.style.display="block";
+  document.getElementById("loading").style.display="block";
   state.currentPage++;
   const docs=state.currentQuery?await fetchArchive(state.currentQuery,state.currentPage):await fetchArchive("mediatype:(movies)",state.currentPage);
-  showVideos(docs);
-  state.loading=false;
-  loadingDiv.style.display="none";
+  showVideos(docs); state.loading=false; document.getElementById("loading").style.display="none";
 }
 
 function showVideos(docs){
-  if(docs.length===0 && state.currentPage===1){
-    videoListDiv.innerHTML=`<div class="no-results">❌ لم يتم العثور على أي فيديوهات</div>`;
-    return;
-  }
-  
-  // Use a DocumentFragment for faster DOM manipulation
-  const fragment = document.createDocumentFragment();
+  const listDiv=document.getElementById("videoList");
+  if(docs.length===0&&state.currentPage===1){ listDiv.innerHTML=`<div class="no-results">❌ لم يتم العثور على أي فيديوهات</div>`; return; }
   docs.forEach(doc=>{
-    const div=document.createElement("div");
-    div.classList.add("video-list-item");
+    const div=document.createElement("div"); div.classList.add("video-list-item");
     div.onclick=()=>changeVideo(doc.identifier,doc.title,div);
     div.innerHTML=`<img src="https://archive.org/services/img/${doc.identifier}" alt="${doc.title}"><div class="video-title">${doc.title}</div>`;
-    fragment.appendChild(div);
+    listDiv.appendChild(div);
   });
-  videoListDiv.appendChild(fragment);
-
-  if(state.currentPage===1 && docs.length > 0){
-    const first=videoListDiv.querySelector(".video-list-item");
-    if(first) {
-      first.classList.add("active");
-      changeVideo(docs[0].identifier,docs[0].title,first);
-    }
+  if(state.currentPage===1&&docs.length>0){
+    const first=listDiv.querySelector(".video-list-item");
+    if(first) { first.classList.add("active"); changeVideo(docs[0].identifier,docs[0].title,first); }
   }
 }
 
 function changeVideo(id,title,element){
   state.currentVideoId=id;
-  videoTitle.innerText=title;
-
-  const autoplay = state.currentQuality !== "auto"
-    ? `?autoplay=1&size=${state.currentQuality}`
-    : `?autoplay=1`;
-  archiveFrame.src=`https://archive.org/embed/${id}${autoplay}`;
-
-  currentQualityDisplay.innerText="الجودة: "+(state.currentQuality==="auto"?"تلقائي":state.currentQuality+"p");
+  document.getElementById("videoTitle").innerText=title;
+  document.getElementById("archiveFrame").src=`https://archive.org/embed/${id}${state.currentQuality!=="auto"?`?size=${state.currentQuality}`:""}`;
+  document.getElementById("currentQualityDisplay").innerText="الجودة: "+(state.currentQuality==="auto"?"تلقائي":state.currentQuality+"p");
   document.querySelectorAll(".video-list-item").forEach(el=>el.classList.remove("active"));
   if(element) element.classList.add("active");
-
-  resultsDiv.scrollIntoView({behavior:"smooth"});
 }
 
-function updateVideo(){
-  if(!state.currentVideoId) return;
-  const autoplay = state.currentQuality !== "auto"
-    ? `?autoplay=1&size=${state.currentQuality}`
-    : `?autoplay=1`;
-  archiveFrame.src=`https://archive.org/embed/${state.currentVideoId}${autoplay}`;
-  currentQualityDisplay.innerText="الجودة: "+(state.currentQuality==="auto"?"تلقائي":state.currentQuality+"p");
-}
+function updateVideo(){ if(!state.currentVideoId) return; document.getElementById("archiveFrame").src=`https://archive.org/embed/${state.currentVideoId}${state.currentQuality!=="auto"?`?size=${state.currentQuality}`:""}`; document.getElementById("currentQualityDisplay").innerText="الجودة: "+(state.currentQuality==="auto"?"تلقائي":state.currentQuality+"p"); }
 
 function changeQuality(){ state.currentQuality=document.getElementById("qualitySelect").value; updateVideo(); }
-async function loadDefaultVideos(){
-  loadingDiv.style.display="block";
-  const docs=await fetchArchive("mediatype:(movies)",state.currentPage);
-  loadingDiv.style.display="none";
-  showVideos(docs);
-}
+async function loadDefaultVideos(){ document.getElementById("loading").style.display="block"; const docs=await fetchArchive("mediatype:(movies)",state.currentPage); document.getElementById("loading").style.display="none"; showVideos(docs); }
 function toggleFullscreen(){ const frame=document.getElementById("archiveFrame"); if(frame.requestFullscreen) frame.requestFullscreen(); else if(frame.mozRequestFullScreen) frame.mozRequestFullScreen(); else if(frame.webkitRequestFullscreen) frame.webkitRequestFullscreen(); else if(frame.msRequestFullscreen) frame.msRequestFullscreen(); }
 
-videoListDiv.addEventListener("scroll",async function(){ const list=this; if(list.scrollTop+list.clientHeight>=list.scrollHeight-50) await loadMore(); });
+document.getElementById("videoList").addEventListener("scroll",async function(){ const list=this; if(list.scrollTop+list.clientHeight>=list.scrollHeight-50) await loadMore(); });
 
-// Start loading the videos as soon as the script is parsed, without waiting for the whole page to load
-loadDefaultVideos();
+window.onload=loadDefaultVideos;
 </script>
 </body>
 </html>
