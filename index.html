@@ -36,24 +36,12 @@
   }
 
   @keyframes glowPulse {
-    0% {
-      text-shadow: 0 0 12px red, 0 0 24px red, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7);
-    }
-    20% {
-      text-shadow: 0 0 12px blue, 0 0 24px blue, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7);
-    }
-    40% {
-      text-shadow: 0 0 12px green, 0 0 24px green, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7);
-    }
-    60% {
-      text-shadow: 0 0 12px yellow, 0 0 24px yellow, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7);
-    }
-    80% {
-      text-shadow: 0 0 12px magenta, 0 0 24px magenta, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7);
-    }
-    100% {
-      text-shadow: 0 0 12px cyan, 0 0 24px cyan, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7);
-    }
+    0% { text-shadow: 0 0 12px red, 0 0 24px red, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7); }
+    20% { text-shadow: 0 0 12px blue, 0 0 24px blue, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7); }
+    40% { text-shadow: 0 0 12px green, 0 0 24px green, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7); }
+    60% { text-shadow: 0 0 12px yellow, 0 0 24px yellow, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7); }
+    80% { text-shadow: 0 0 12px magenta, 0 0 24px magenta, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7); }
+    100% { text-shadow: 0 0 12px cyan, 0 0 24px cyan, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7); }
   }
 
   .search-box { margin: 15px; }
@@ -156,7 +144,25 @@
   }
   .video-title { font-size: 14px; color: #ccc; text-align: right; flex: 1; }
   .current-quality { font-size: 13px; color: #3cfcb3; margin-bottom: 5px; }
-  .no-results { margin: 20px; color: #ff8080; font-size: 18px; }
+
+  /* رسالة توهج عند عدم وجود فيديوهات */
+  .no-results {
+    margin: 20px;
+    color: #ff4d4d;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 0 0 6px #ff4d4d, 0 0 12px #ff1a1a;
+    animation: messageGlow 2s infinite alternate;
+  }
+
+  @keyframes messageGlow {
+    0% { text-shadow: 0 0 6px #ff4d4d, 0 0 12px #ff1a1a; }
+    25% { text-shadow: 0 0 6px #ffb84d, 0 0 12px #ffaa1a; }
+    50% { text-shadow: 0 0 6px #4dff4d, 0 0 12px #1aff1a; }
+    75% { text-shadow: 0 0 6px #4d4dff, 0 0 12px #1a1aff; }
+    100% { text-shadow: 0 0 6px #ff4dff, 0 0 12px #ff1aff; }
+  }
+
   .loading-container { display: none; margin: 15px; text-align: center; color: #3cfcb3; font-size: 14px; }
   .loading-spinner {
     border: 4px solid #3cfcb3;
@@ -275,7 +281,7 @@ async function loadMore() {
 function showVideos(docs) {
   const listDiv = document.getElementById("videoList");
   if (docs.length === 0 && state.currentPage === 1) {
-    listDiv.innerHTML = `<div class="no-results">❌ ماكانش فيديوهات</div>`;
+    listDiv.innerHTML = `<div class="no-results">❌ لم يتم العثور على أي فيديوهات</div>`;
     return;
   }
   docs.forEach(doc => {
@@ -283,10 +289,7 @@ function showVideos(docs) {
     const div = document.createElement("div");
     div.classList.add("video-list-item");
     div.onclick = () => changeVideo(doc.identifier, doc.title, div);
-    div.innerHTML = `
-      <img src="${thumb}" alt="${doc.title}">
-      <div class="video-title">${doc.title}</div>
-    `;
+    div.innerHTML = `<img src="${thumb}" alt="${doc.title}"><div class="video-title">${doc.title}</div>`;
     listDiv.appendChild(div);
   });
 
@@ -314,9 +317,7 @@ function updateVideo() {
   document.getElementById("currentQualityDisplay").innerText = "الجودة: " + (state.currentQuality === 'auto' ? "تلقائي" : state.currentQuality + "p");
   document.getElementById("results").scrollIntoView({ behavior: "smooth" });
 
-  setTimeout(() => {
-    document.getElementById("loading").style.display = "none";
-  }, 3000);
+  setTimeout(() => { document.getElementById("loading").style.display = "none"; }, 3000);
 }
 
 function changeQuality() {
