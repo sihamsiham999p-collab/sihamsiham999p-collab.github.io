@@ -20,184 +20,57 @@
     font-size: 65px;
     font-weight: bold;
     color: #3cfcb3;
-    text-shadow: 
-      0 0 8px rgba(255, 0, 0, 0.8),
-      0 0 16px rgba(255, 0, 0, 0.6),
-      0 0 24px rgba(255, 0, 0, 0.4),
-      2px 2px 0 #004d40,
-      4px 4px 6px rgba(0, 0, 0, 0.7);
+    text-shadow: 0 0 8px rgba(255,0,0,0.8),0 0 16px rgba(255,0,0,0.6),0 0 24px rgba(255,0,0,0.4),2px 2px 0 #004d40,4px 4px 6px rgba(0,0,0,0.7);
     margin: 20px 0;
     display: inline-block;
     padding: 12px 25px;
-    background: rgba(0, 60, 50, 0.25);
+    background: rgba(0,60,50,0.25);
     border-radius: 20px;
-    box-shadow: 0 6px 20px rgba(60, 252, 179, 0.3);
+    box-shadow: 0 6px 20px rgba(60,252,179,0.3);
     animation: glowPulse 6s infinite;
   }
-
   @keyframes glowPulse {
-    0% { text-shadow: 0 0 12px red, 0 0 24px red, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7); }
-    20% { text-shadow: 0 0 12px blue, 0 0 24px blue, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7); }
-    40% { text-shadow: 0 0 12px green, 0 0 24px green, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7); }
-    60% { text-shadow: 0 0 12px yellow, 0 0 24px yellow, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7); }
-    80% { text-shadow: 0 0 12px magenta, 0 0 24px magenta, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7); }
-    100% { text-shadow: 0 0 12px cyan, 0 0 24px cyan, 2px 2px 0 #004d40, 4px 4px 6px rgba(0,0,0,0.7); }
+    0% { text-shadow: 0 0 12px red,0 0 24px red,2px 2px 0 #004d40,4px 4px 6px rgba(0,0,0,0.7); }
+    20% { text-shadow: 0 0 12px blue,0 0 24px blue,2px 2px 0 #004d40,4px 4px 6px rgba(0,0,0,0.7); }
+    40% { text-shadow: 0 0 12px green,0 0 24px green,2px 2px 0 #004d40,4px 4px 6px rgba(0,0,0,0.7); }
+    60% { text-shadow: 0 0 12px yellow,0 0 24px yellow,2px 2px 0 #004d40,4px 4px 6px rgba(0,0,0,0.7); }
+    80% { text-shadow: 0 0 12px magenta,0 0 24px magenta,2px 2px 0 #004d40,4px 4px 6px rgba(0,0,0,0.7); }
+    100% { text-shadow: 0 0 12px cyan,0 0 24px cyan,2px 2px 0 #004d40,4px 4px 6px rgba(0,0,0,0.7); }
   }
-
   .search-box { margin: 15px; }
-  input {
-    padding: 10px;
-    border-radius: 10px;
-    border: none;
-    width: 70%;
-    max-width: 250px;
-  }
-  button {
-    padding: 10px 15px;
-    border-radius: 10px;
-    border: none;
-    background: #3cfcb3;
-    cursor: pointer;
-    font-weight: bold;
-  }
+  input { padding: 10px; border-radius: 10px; border: none; width: 70%; max-width: 250px; }
+  button { padding: 10px 15px; border-radius: 10px; border: none; background: #3cfcb3; cursor: pointer; font-weight: bold; }
   button:hover { background: #2abf8b; }
-  .video-card {
-    background: #13274a;
-    margin: 10px auto;
-    padding: 10px;
-    border-radius: 12px;
-    width: 95%;
-    max-width: 800px;
-    position: relative;
-  }
-  iframe {
-    border-radius: 10px;
-    width: 100%;
-    height: 400px;
-  }
-  @media (max-width: 600px) {
-    iframe { height: 220px; }
-    .site-logo { font-size: 40px; padding: 8px 16px; }
-  }
-  .logo-overlay {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 65px;
-    height: 65px;
-    background: #0077ff;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-    font-family: "Arial Black", sans-serif;
-    box-shadow: 0 0 10px rgba(0, 119, 255, 0.7);
-    z-index: 10;
-    pointer-events: none;
-    animation: spin 20s linear infinite;
-  }
+
+  .video-card { background: #13274a; margin: 10px auto; padding: 10px; border-radius: 12px; width: 95%; max-width: 800px; position: relative; }
+  iframe { border-radius: 10px; width: 100%; height: 400px; }
+  @media (max-width:600px){ iframe{height:220px;} .site-logo{font-size:40px;padding:8px 16px;} }
+
+  .logo-overlay { position:absolute; top:10px; right:10px; width:65px; height:65px; background:#0077ff; border-radius:50%; display:flex; justify-content:center; align-items:center; font-size:16px; font-weight:bold; color:white; font-family:"Arial Black",sans-serif; box-shadow:0 0 10px rgba(0,119,255,0.7); z-index:10; pointer-events:none; animation:spin 20s linear infinite; }
   @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-  .controls { margin-top: 10px; }
-  .controls button, .controls select {
-    margin: 5px;
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  .controls button { background: #3cfcb3; }
-  .controls button:hover { background: #2abf8b; }
-  #downloadBtn { background: #2ecc71; }
-  #downloadBtn:hover { background: #27ae60; }
-  .video-list {
-    max-height: 400px;
-    overflow-y: auto;
-    margin-top: 15px;
-    padding: 10px;
-    background: #0f1e3f;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-  .video-list-item {
-    display: flex;
-    align-items: center;
-    background: #1a2b4d;
-    border-radius: 8px;
-    padding: 5px;
-    cursor: pointer;
-  }
-  .video-list-item:hover,
-  .video-list-item.active {
-    border: 2px solid #3cfcb3;
-    box-shadow: 0 0 10px rgba(60, 252, 179, 0.5);
-  }
-  .video-list img {
-    width: 120px;
-    border-radius: 6px;
-    margin-left: 10px;
-  }
-  .video-title { font-size: 14px; color: #ccc; text-align: right; flex: 1; }
-  .current-quality { font-size: 13px; color: #3cfcb3; margin-bottom: 5px; }
 
-  /* رسالة توهج عند عدم وجود فيديوهات */
-  .no-results {
-    margin: 20px;
-    color: #ff4d4d;
-    font-size: 18px;
-    font-weight: bold;
-    text-shadow: 0 0 6px #ff4d4d, 0 0 12px #ff1a1a;
-    animation: messageGlow 2s infinite alternate;
-  }
+  .controls { margin-top:10px; }
+  .controls button, .controls select { margin:5px; padding:8px 12px; border-radius:8px; border:none; cursor:pointer; font-weight:bold; }
+  .controls button { background:#3cfcb3; } .controls button:hover{background:#2abf8b;}
+  #downloadBtn{background:#2ecc71;} #downloadBtn:hover{background:#27ae60;}
 
-  @keyframes messageGlow {
-    0% { text-shadow: 0 0 6px #ff4d4d, 0 0 12px #ff1a1a; }
-    25% { text-shadow: 0 0 6px #ffb84d, 0 0 12px #ffaa1a; }
-    50% { text-shadow: 0 0 6px #4dff4d, 0 0 12px #1aff1a; }
-    75% { text-shadow: 0 0 6px #4d4dff, 0 0 12px #1a1aff; }
-    100% { text-shadow: 0 0 6px #ff4dff, 0 0 12px #ff1aff; }
-  }
+  .video-list { max-height:400px; overflow-y:auto; margin-top:15px; padding:10px; background:#0f1e3f; border-radius:12px; display:flex; flex-direction:column; gap:10px; }
+  .video-list-item { display:flex; align-items:center; background:#1a2b4d; border-radius:8px; padding:5px; cursor:pointer; transition:all 0.2s; }
+  .video-list-item.active { border:2px solid #ff4da6; box-shadow:0 0 12px rgba(255,77,166,0.6); }
+  .video-list-item:hover{ border:2px solid #3cfcb3; box-shadow:0 0 10px rgba(60,252,179,0.5); }
+  .video-list img{ width:120px; border-radius:6px; margin-left:10px; }
+  .video-title{ font-size:14px; color:#ccc; text-align:right; flex:1; }
+  .current-quality{ font-size:13px; color:#3cfcb3; margin-bottom:5px; }
 
-  .loading-container { display: none; margin: 15px; text-align: center; color: #3cfcb3; font-size: 14px; }
-  .loading-spinner {
-    border: 4px solid #3cfcb3;
-    border-top: 4px solid transparent;
-    border-radius: 50%;
-    width: 30px;
-    height: 30px;
-    margin: 0 auto 8px;
-    animation: spin 1s linear infinite;
-  }
-  #downloadOptions {
-    display: none;
-    margin-top: 8px;
-    padding: 8px;
-    background: #1a2b4d;
-    border-radius: 8px;
-  }
-  #downloadOptions a {
-    display: block;
-    color: #3cfcb3;
-    padding: 5px;
-    text-decoration: none;
-    border-radius: 6px;
-  }
-  #downloadOptions a:hover {
-    background: #2abf8b;
-    color: white;
-  }
-  #qualityDownloadOptions {
-    display: none;
-    margin-top: 8px;
-    padding: 8px;
-    background: #1a2b4d;
-    border-radius: 8px;
-  }
+  .no-results{ margin:20px; color:#ff4d4d; font-size:18px; font-weight:bold; text-shadow:0 0 6px #ff4d4d,0 0 12px #ff1a1a; animation:messageGlow 2s infinite alternate; }
+  @keyframes messageGlow{0%{text-shadow:0 0 6px #ff4d4d,0 0 12px #ff1a1a;} 25%{text-shadow:0 0 6px #ffb84d,0 0 12px #ffaa1a;} 50%{text-shadow:0 0 6px #4dff4d,0 0 12px #1aff1a;} 75%{text-shadow:0 0 6px #4d4dff,0 0 12px #1a1aff;} 100%{text-shadow:0 0 6px #ff4dff,0 0 12px #ff1aff;} }
+
+  .loading-container{ display:none; margin:15px; text-align:center; color:#3cfcb3; font-size:14px; }
+  .loading-spinner{ border:4px solid #3cfcb3; border-top:4px solid transparent; border-radius:50%; width:30px; height:30px; margin:0 auto 8px; animation:spin 1s linear infinite; }
+
+  #downloadOptions,#qualityDownloadOptions{ display:none; margin-top:8px; padding:8px; background:#1a2b4d; border-radius:8px; }
+  #downloadOptions a,#qualityDownloadOptions button{ color:#3cfcb3; padding:5px; text-decoration:none; border-radius:6px; display:block; margin:3px 0; }
+  #downloadOptions a:hover,#qualityDownloadOptions button:hover{ background:#2abf8b; color:white; }
 </style>
 </head>
 <body>
@@ -210,12 +83,9 @@
 
 <div class="video-card" id="results">
   <div class="logo-overlay">Farsi</div>
-
   <iframe id="archiveFrame" src="about:blank" frameborder="0" allowfullscreen></iframe>
-
   <div id="currentQualityDisplay" class="current-quality">الجودة: تلقائي</div>
   <h3 id="videoTitle">فيديو</h3>
-
   <div class="controls">
     <button onclick="toggleFullscreen()"><i class="fas fa-expand"></i> تكبير</button>
     <select id="qualitySelect" onchange="changeQuality()">
@@ -237,174 +107,67 @@
 </div>
 
 <script>
-const state = {
-  currentPage: 1,
-  currentQuery: "",
-  currentVideoId: "",
-  currentQuality: "auto",
-  loading: false
-};
+const state={currentPage:1,currentQuery:"",currentVideoId:"",currentQuality:"auto",loading:false};
 
-async function fetchArchive(query, page = 1) {
-  const url = `https://archive.org/advancedsearch.php?q=${encodeURIComponent(query)}+AND+mediatype:(movies)&fl[]=identifier&fl[]=title&sort[]=downloads+desc&rows=20&page=${page}&output=json`;
-  const res = await fetch(url);
-  const data = await res.json();
-  return data.response.docs;
+async function fetchArchive(query,page=1){
+  const url=`https://archive.org/advancedsearch.php?q=${encodeURIComponent(query)}+AND+mediatype:(movies)&fl[]=identifier&fl[]=title&sort[]=downloads+desc&rows=20&page=${page}&output=json`;
+  const res=await fetch(url); const data=await res.json(); return data.response.docs;
 }
 
-async function startSearch() {
-  state.currentPage = 1;
-  document.getElementById("videoList").innerHTML = "";
-  if (!document.getElementById("search").value.trim()) return;
-  state.currentQuery = document.getElementById("search").value;
-  document.getElementById("loading").style.display = "block";
-  const docs = await fetchArchive(state.currentQuery, state.currentPage);
-  document.getElementById("loading").style.display = "none";
+async function startSearch(){
+  state.currentPage=1;
+  document.getElementById("videoList").innerHTML="";
+  const val=document.getElementById("search").value.trim();
+  if(!val) return;
+  state.currentQuery=val;
+  document.getElementById("loading").style.display="block";
+  const docs=await fetchArchive(state.currentQuery,state.currentPage);
+  document.getElementById("loading").style.display="none";
   showVideos(docs);
 }
 
-async function loadMore() {
-  if (state.loading) return;
-  state.loading = true;
-  document.getElementById("loading").style.display = "block";
-
+async function loadMore(){
+  if(state.loading) return;
+  state.loading=true;
+  document.getElementById("loading").style.display="block";
   state.currentPage++;
-  const docs = state.currentQuery 
-      ? await fetchArchive(state.currentQuery, state.currentPage) 
-      : await fetchArchive("mediatype:(movies)", state.currentPage);
-  
-  showVideos(docs);
-  state.loading = false;
-  document.getElementById("loading").style.display = "none";
+  const docs=state.currentQuery?await fetchArchive(state.currentQuery,state.currentPage):await fetchArchive("mediatype:(movies)",state.currentPage);
+  showVideos(docs); state.loading=false; document.getElementById("loading").style.display="none";
 }
 
-function showVideos(docs) {
-  const listDiv = document.getElementById("videoList");
-  if (docs.length === 0 && state.currentPage === 1) {
-    listDiv.innerHTML = `<div class="no-results">❌ لم يتم العثور على أي فيديوهات</div>`;
-    return;
-  }
-  docs.forEach(doc => {
-    const thumb = `https://archive.org/services/img/${doc.identifier}`;
-    const div = document.createElement("div");
-    div.classList.add("video-list-item");
-    div.onclick = () => changeVideo(doc.identifier, doc.title, div);
-    div.innerHTML = `<img src="${thumb}" alt="${doc.title}"><div class="video-title">${doc.title}</div>`;
+function showVideos(docs){
+  const listDiv=document.getElementById("videoList");
+  if(docs.length===0&&state.currentPage===1){ listDiv.innerHTML=`<div class="no-results">❌ لم يتم العثور على أي فيديوهات</div>`; return; }
+  docs.forEach(doc=>{
+    const div=document.createElement("div"); div.classList.add("video-list-item");
+    div.onclick=()=>changeVideo(doc.identifier,doc.title,div);
+    div.innerHTML=`<img src="https://archive.org/services/img/${doc.identifier}" alt="${doc.title}"><div class="video-title">${doc.title}</div>`;
     listDiv.appendChild(div);
   });
-
-  if (state.currentPage === 1 && docs.length > 0) {
-    const firstItem = listDiv.querySelector(".video-list-item");
-    if (firstItem) {
-      firstItem.classList.add("active");
-      changeVideo(docs[0].identifier, docs[0].title, firstItem);
-    }
+  if(state.currentPage===1&&docs.length>0){
+    const first=listDiv.querySelector(".video-list-item");
+    if(first) { first.classList.add("active"); changeVideo(docs[0].identifier,docs[0].title,first); }
   }
 }
 
-function changeVideo(id, title, element) {
-  state.currentVideoId = id;
-  document.getElementById("videoTitle").innerText = title;
-  updateVideo();
-  document.querySelectorAll(".video-list-item").forEach(el => el.classList.remove("active"));
-  if (element) element.classList.add("active");
+function changeVideo(id,title,element){
+  state.currentVideoId=id;
+  document.getElementById("videoTitle").innerText=title;
+  document.getElementById("archiveFrame").src=`https://archive.org/embed/${id}${state.currentQuality!=="auto"?`?size=${state.currentQuality}`:""}`;
+  document.getElementById("currentQualityDisplay").innerText="الجودة: "+(state.currentQuality==="auto"?"تلقائي":state.currentQuality+"p");
+  document.querySelectorAll(".video-list-item").forEach(el=>el.classList.remove("active"));
+  if(element) element.classList.add("active");
 }
 
-function updateVideo() {
-  const src = `https://archive.org/embed/${state.currentVideoId}${state.currentQuality !== 'auto' ? '?size=' + state.currentQuality : ''}`;
-  document.getElementById("loading").style.display = "block";
-  document.getElementById("archiveFrame").src = src;
-  document.getElementById("currentQualityDisplay").innerText = "الجودة: " + (state.currentQuality === 'auto' ? "تلقائي" : state.currentQuality + "p");
-  document.getElementById("results").scrollIntoView({ behavior: "smooth" });
+function updateVideo(){ if(!state.currentVideoId) return; document.getElementById("archiveFrame").src=`https://archive.org/embed/${state.currentVideoId}${state.currentQuality!=="auto"?`?size=${state.currentQuality}`:""}`; document.getElementById("currentQualityDisplay").innerText="الجودة: "+(state.currentQuality==="auto"?"تلقائي":state.currentQuality+"p"); }
 
-  setTimeout(() => { document.getElementById("loading").style.display = "none"; }, 3000);
-}
+function changeQuality(){ state.currentQuality=document.getElementById("qualitySelect").value; updateVideo(); }
+async function loadDefaultVideos(){ document.getElementById("loading").style.display="block"; const docs=await fetchArchive("mediatype:(movies)",state.currentPage); document.getElementById("loading").style.display="none"; showVideos(docs); }
+function toggleFullscreen(){ const frame=document.getElementById("archiveFrame"); if(frame.requestFullscreen) frame.requestFullscreen(); else if(frame.mozRequestFullScreen) frame.mozRequestFullScreen(); else if(frame.webkitRequestFullscreen) frame.webkitRequestFullscreen(); else if(frame.msRequestFullscreen) frame.msRequestFullscreen(); }
 
-function changeQuality() {
-  state.currentQuality = document.getElementById("qualitySelect").value;
-  updateVideo();
-}
+document.getElementById("videoList").addEventListener("scroll",async function(){ const list=this; if(list.scrollTop+list.clientHeight>=list.scrollHeight-50) await loadMore(); });
 
-async function loadDefaultVideos() {
-  document.getElementById("loading").style.display = "block";
-  const docs = await fetchArchive("mediatype:(movies)", state.currentPage);
-  document.getElementById("loading").style.display = "none";
-  showVideos(docs);
-}
-
-function toggleFullscreen() {
-  const frame = document.getElementById("archiveFrame");
-  if (frame.requestFullscreen) frame.requestFullscreen();
-  else if (frame.mozRequestFullScreen) frame.mozRequestFullScreen();
-  else if (frame.webkitRequestFullscreen) frame.webkitRequestFullscreen();
-  else if (frame.msRequestFullscreen) frame.msRequestFullscreen();
-}
-
-async function downloadVideo() {
-  if (!state.currentVideoId) return;
-
-  try {
-    const url = `https://archive.org/metadata/${state.currentVideoId}`;
-    const res = await fetch(url);
-    const data = await res.json();
-
-    const videoFiles = data.files.filter(f => f.name.match(/\.(mp4|mkv|ogg|webm)$/i));
-    const container = document.getElementById("downloadOptions");
-    const qualityContainer = document.getElementById("qualityDownloadOptions");
-    container.innerHTML = "";
-    qualityContainer.innerHTML = "";
-    container.style.display = "none";
-    qualityContainer.style.display = "none";
-
-    if (videoFiles.length > 0) {
-      container.style.display = "block";
-      qualityContainer.style.display = "block";
-
-      videoFiles.forEach(file => {
-        let qualityMatch = file.name.match(/(\d{3,4})p/);
-        let quality = qualityMatch ? qualityMatch[1] + "p" : "غير معروف";
-
-        const link = document.createElement("a");
-        link.href = `https://archive.org/download/${state.currentVideoId}/${file.name}`;
-        link.target = "_blank";
-        link.innerText = `⬇ ${file.name} (${Math.round((file.size || 0) / (1024*1024))} MB)`;
-        container.appendChild(link);
-
-        const dlBtn = document.createElement("button");
-        dlBtn.innerText = `تنزيل مباشر (${quality})`;
-        dlBtn.style.margin = "5px";
-        dlBtn.style.padding = "6px 12px";
-        dlBtn.style.border = "none";
-        dlBtn.style.borderRadius = "8px";
-        dlBtn.style.cursor = "pointer";
-        dlBtn.style.background = "#3498db";
-        dlBtn.style.color = "white";
-        dlBtn.onclick = () => {
-          const a = document.createElement("a");
-          a.href = `https://archive.org/download/${state.currentVideoId}/${file.name}`;
-          a.download = file.name;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-        };
-        qualityContainer.appendChild(dlBtn);
-      });
-    } else {
-      alert("❌ هذا الفيديو ماعندوش ملفات فيديو متاحة.");
-    }
-  } catch (e) {
-    alert("⚠️ خطأ في جلب روابط التحميل.");
-  }
-}
-
-document.getElementById("videoList").addEventListener("scroll", async function () {
-  const list = this;
-  if (list.scrollTop + list.clientHeight >= list.scrollHeight - 50) {
-    await loadMore();
-  }
-});
-
-window.onload = loadDefaultVideos;
+window.onload=loadDefaultVideos;
 </script>
 </body>
 </html>
